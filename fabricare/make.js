@@ -25,30 +25,29 @@ Shell.mkdirRecursivelyIfNotExists("temp");
 Shell.mkdirRecursivelyIfNotExists("temp/cmake");
 
 if (!Shell.fileExists("temp/build.config.flag")) {
-	Shell.copyFile("fabricare/CMakeLists.txt","source/CMakeLists.txt");
+	Shell.copyFile("fabricare/CMakeLists.txt", "source/CMakeLists.txt");
 
-	Shell.setenv("CC","cl.exe");
-	Shell.setenv("CXX","cl.exe");
+	Shell.setenv("CC", "cl.exe");
+	Shell.setenv("CXX", "cl.exe");
 
-	cmdConfig="cmake";
-	cmdConfig+=" ../../source";
-	cmdConfig+=" -G \"Ninja\"";
-	cmdConfig+=" -DCMAKE_BUILD_TYPE=Release";
-	cmdConfig+=" -DCMAKE_INSTALL_PREFIX="+Shell.realPath(Shell.getcwd())+"\\output";
-	cmdConfig+=" -DAPR_INSTALL_PRIVATE_H=ON";
+	cmdConfig = "cmake";
+	cmdConfig += " ../../source";
+	cmdConfig += " -G \"Ninja\"";
+	cmdConfig += " -DCMAKE_BUILD_TYPE=Release";
+	cmdConfig += " -DCMAKE_INSTALL_PREFIX=" + Shell.realPath(Shell.getcwd()) + "\\output";
+	cmdConfig += " -DAPR_INSTALL_PRIVATE_H=ON";
 
-	runInPath("temp/cmake",function(){
+	runInPath("temp/cmake", function() {
 		exitIf(Shell.system(cmdConfig));
 	});
 
 	Shell.filePutContents("temp/build.config.flag", "done");
 };
 
-runInPath("temp/cmake",function(){
+runInPath("temp/cmake", function() {
 	exitIf(Shell.system("ninja"));
 	exitIf(Shell.system("ninja install"));
 	exitIf(Shell.system("ninja clean"));
 });
 
 Shell.filePutContents("temp/build.done.flag", "done");
-
