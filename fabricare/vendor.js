@@ -11,14 +11,18 @@ Shell.mkdirRecursivelyIfNotExists("archive");
 
 // Self
 if (Shell.fileExists("archive/" + Project.vendor + ".7z")) {
-	if (Shell.getFileSize("archive/" + Project.vendor + ".7z") > 16) {
+	if (Shell.getFileSize("archive/" + Project.vendor + ".7z") > 1024) {
 		return;
 	};
 	Shell.removeFile("archive/" + Project.vendor + ".7z");
 };
 
-Console.writeLn("curl --insecure --location https://github.com/g-stefan/vendor-" + Project.name + "/releases/download/v" + Project.version + "/" + Project.vendor + ".7z --output archive/" + Project.vendor + ".7z");
-exitIf(Shell.system("curl --insecure --location https://github.com/g-stefan/vendor-" + Project.name + "/releases/download/v" + Project.version + "/" + Project.vendor + ".7z --output archive/" + Project.vendor + ".7z"));
+var vendorSourceGit = "https://github.com/g-stefan";
+if (Shell.hasEnv("VENDOR_SOURCE_GIT")) {
+	vendorSourceGit = Shell.getenv("VENDOR_SOURCE_GIT");
+};
+
+exitIf(Shell.system("curl --insecure --location " + vendorSourceGit + "/vendor-" + Project.name + "/releases/download/v" + Project.version + "/" + Project.vendor + ".7z --output archive/" + Project.vendor + ".7z"));
 if (Shell.getFileSize("archive/" + Project.vendor + ".7z") > 1024) {
 	return;
 };
@@ -27,10 +31,10 @@ Shell.removeFile("archive/" + Project.vendor + ".7z");
 // Source
 runInPath("archive", function() {
 	webLink = "https://dlcdn.apache.org/apr/apr-" + Project.version + ".tar.gz";
-	Console.writeLn("Download: "+webLink);
+	Console.writeLn("Download: " + webLink);
 	if (!Shell.fileExists(Project.vendor + ".tar.gz")) {
 		exitIf(Shell.system("curl --insecure --location " + webLink + " --output " + Project.vendor + ".tar.gz"));
-		if (Shell.getFileSize(Project.vendor + ".tar.gz") < 1024) {			
+		if (Shell.getFileSize(Project.vendor + ".tar.gz") < 1024) {
 			return;
 		};
 	};
