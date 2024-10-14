@@ -7,7 +7,7 @@
 				"name" : "apr",
 				"SPDX-License-Identifier": "Apache-2.0",
 				"sourceLink" : "https://apr.apache.org/download.cgi",
-				"version" : "1.7.4",
+				"version" : "1.7.5",
 				"noVersion" : true
 			}
 		],	
