@@ -1,6 +1,5 @@
 {
 	"solution": {
-		"namespace" : "xyo",
 		"name" : "vendor-apr",
 		"type" : "xyo-cpp",
 		"projects": [
